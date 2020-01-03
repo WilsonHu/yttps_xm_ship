@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#00969E</color>
+    <color name="colorPrimaryDark">#00969E</color>
+    <color name="colorAccent">#00969E</color>
+
+    <color name="windowBackground">#EBEBEB</color>
+    <color name="windowBackgroundWhite">#FFFFFF</color>
+    <color name="windowBackgroundSelected">#F3F3F7</color>
+    <color name="fragmentTab">#686F78</color>
+
+    <color name="titleColor">#757575</color>
+    <color name="titleColorSelected">#F54D33</color>
+
+    <color name="blue">#FF375BF1</color>
+    <color name="yellow">#FFF7D23E</color>
+    <color name="green">#FF34A350</color>
+
+    <integer-array name="google_colors">
+        <item>@color/red</item>
+        <item>@color/blue</item>
+        <item>@color/yellow</item>
+        <item>@color/green</item>
+    </integer-array>
+
+    <color name="red_add_to_cart_n">#f15353</color>
+    <color name="red_add_to_cart_p">#a83a3a</color>
+    <color name="white">#ffffff</color>
+    <color name="hintColor">#d7d7d7</color>
+    <color name="light_yellow">#FFFFFFE8</color>
+    <color name="lightBg">#fefefe</color>
+    <color name="red">#ff0000</color>
+    <color name="purple">#8e8bf2</color>
+    <color name="gray">#9c9c9c</color>
+    <color name="lightgray">#a0a0a0</color>
+    <color name="darkgray">#7b7b7b</color>
+    <color name="dimgray">#5b5b5b</color>
+    <color name="black">#000000</color>
+    <color name="background_titlebar">#ff26587d</color>
+    <color name="background_light">#ffffffff</color>
+    <color name="foreground_on_dark">#ffffffff</color>
+    <color name="border_color_on_light">#ff3bb3c3</color>
+
+    <color name="pressBarBg">#f2f2f2</color>
+
+    <!-- 透明 -->
+    <color name="transparent">#00000000</color>
+
+    <!-- topbar和item的背景色 -->
+    <color name="bg_topbar">#fbfbfb</color>
+
+    <!-- app背景色 -->
+    <color name="android_layout_bg">#f2f3f5</color>
+
+    <!-- 购物车ListView背景 -->
+    <color name="listView_bg">#f2f4f6</color>
+
+    <color name="divide_line">#F5F5F5</color>
+    <!-- spinner 背景-->
+    <color name="spinner_bg">#EBEEF5</color>
+</resources>
