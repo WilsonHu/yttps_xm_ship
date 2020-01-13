@@ -113,17 +113,17 @@ public class ShipApp extends Application {
         this.password = readValue(PersistentValueType.PASSWORD, "");
     }
 
-    @SuppressLint({"MissingPermission", "HardwareIds"})
-    public String getIMEI() {
-        IMEI = null;
-        TelephonyManager telephonyManager = (TelephonyManager) this.getSystemService(TELEPHONY_SERVICE);
-        if (telephonyManager != null) {
-            IMEI = telephonyManager.getDeviceId();
-        } else {
-            Log.d(TAG, "getIMEI: have some error");
-        }
-        return IMEI;
-    }
+//    @SuppressLint({"MissingPermission", "HardwareIds"})
+//    public String getIMEI() {
+//        IMEI = null;
+//        TelephonyManager telephonyManager = (TelephonyManager) this.getSystemService(TELEPHONY_SERVICE);
+//        if (telephonyManager != null) {
+//            IMEI = telephonyManager.getDeviceId();
+//        } else {
+//            Log.d(TAG, "getIMEI: have some error");
+//        }
+//        return IMEI;
+//    }
 
     public String getToken() {
         return mToken;

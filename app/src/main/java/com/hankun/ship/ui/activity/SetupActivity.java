@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.DeviceUtils;
 import com.google.gson.Gson;
 import com.hankun.ship.R;
 import com.hankun.ship.adapter.MySpinnerAdapter;
@@ -204,7 +205,7 @@ public class SetupActivity extends AppCompatActivity implements View.OnClickList
                 postValue.put("cruise_id", mCruiseID);
                 postValue.put("lane", mLaneValueTv.getText());
                 postValue.put("mode", mode);
-                postValue.put("sn", ShipApp.getApp().getIMEI());
+                postValue.put("sn", DeviceUtils.getMacAddress());
                 mNetwork.postData(URL.SETUP_URL, new Gson().toJson(postValue), mUploadModeHandler);
             }
         }

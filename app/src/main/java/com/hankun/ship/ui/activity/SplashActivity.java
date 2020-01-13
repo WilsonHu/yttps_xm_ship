@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.arcsoft.face.ActiveFileInfo;
 import com.arcsoft.face.ErrorInfo;
 import com.arcsoft.face.FaceEngine;
+import com.blankj.utilcode.util.DeviceUtils;
 import com.google.gson.Gson;
 import com.hankun.ship.R;
 import com.hankun.ship.app.ShipApp;
@@ -182,7 +183,7 @@ public class SplashActivity extends AppCompatActivity implements EasyPermissions
                             LinkedHashMap<String, Object> postValue = new LinkedHashMap<>();
                             postValue.put("account", account);
                             postValue.put("password", password);
-                            postValue.put("sn", ShipApp.getApp().getIMEI());
+                            postValue.put("sn", DeviceUtils.getMacAddress());
                             String loginUrl = URL.USER_LOGIN;
                             mNetwork.postData(loginUrl, new Gson().toJson(postValue), mFetchLoginHandler);
                             return null;

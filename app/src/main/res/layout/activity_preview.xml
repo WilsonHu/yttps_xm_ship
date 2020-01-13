@@ -60,8 +60,8 @@
         android:orientation="vertical"
         android:background="@color/white">
         <ImageView
-            android:layout_width="120dp"
-            android:layout_height="96dp"
+            android:layout_width="180dp"
+            android:layout_height="150dp"
             android:layout_marginTop="24dp"
             android:layout_marginLeft="36dp"
             android:src="@drawable/dream_logo"/>
@@ -73,8 +73,8 @@
             android:gravity="center">
             <ImageView
                 android:id="@+id/loading_icon"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
                 android:src="@drawable/loading"
                 android:layout_gravity="center"/>
             <TextView
@@ -86,7 +86,7 @@
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:layout_marginTop="5dp"
-                android:textSize="24sp"/>
+                android:textSize="28sp"/>
             <TextView
                 android:id="@+id/loading_tc"
                 android:text="請耐心等待"
@@ -95,7 +95,7 @@
                 android:gravity="center"
                 android:textColor="@color/dimgray"
                 android:layout_marginTop="5dp"
-                android:textSize="24sp"/>
+                android:textSize="28sp"/>
             <TextView
                 android:id="@+id/loading_sc"
                 android:text="请耐心等待"
@@ -104,7 +104,7 @@
                 android:gravity="center"
                 android:textColor="@color/dimgray"
                 android:layout_marginTop="5dp"
-                android:textSize="24sp"/>
+                android:textSize="28sp"/>
             <TextView
                 android:id="@+id/loading_ja"
                 android:text="お待ちください"
@@ -113,7 +113,7 @@
                 android:gravity="center"
                 android:textColor="@color/dimgray"
                 android:layout_marginTop="5dp"
-                android:textSize="24sp"/>
+                android:textSize="28sp"/>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -125,8 +125,8 @@
         android:orientation="vertical"
         android:background="@color/white">
         <ImageView
-            android:layout_width="120dp"
-            android:layout_height="96dp"
+            android:layout_width="180dp"
+            android:layout_height="150dp"
             android:layout_marginTop="24dp"
             android:layout_marginLeft="36dp"
             android:src="@drawable/dream_logo"/>
@@ -138,8 +138,8 @@
             android:gravity="center">
             <ImageView
                 android:id="@+id/verify_result_icon"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
                 android:src="@drawable/verify_success"
                 android:layout_gravity="center"/>
             <TextView
@@ -150,7 +150,7 @@
                 android:gravity="center_horizontal"
                 android:textColor="@color/black"
                 android:layout_marginTop="5dp"
-                android:textSize="24sp"/>
+                android:textSize="28sp"/>
             <TextView
                 android:id="@+id/verify_result_tc"
                 android:text="歡迎！"
@@ -159,7 +159,7 @@
                 android:gravity="center_horizontal"
                 android:textColor="@color/dimgray"
                 android:layout_marginTop="5dp"
-                android:textSize="24sp"/>
+                android:textSize="28sp"/>
             <TextView
                 android:id="@+id/verify_result_sc"
                 android:text="欢迎！"
@@ -168,7 +168,7 @@
                 android:gravity="center_horizontal"
                 android:textColor="@color/dimgray"
                 android:layout_marginTop="5dp"
-                android:textSize="24sp"/>
+                android:textSize="28sp"/>
             <TextView
                 android:id="@+id/verify_result_ja"
                 android:text="ようこそ！"
@@ -177,20 +177,7 @@
                 android:gravity="center_horizontal"
                 android:textColor="@color/dimgray"
                 android:layout_marginTop="5dp"
-                android:textSize="24sp"/>
+                android:textSize="28sp"/>
         </LinearLayout>
     </LinearLayout>
-    <!--<FrameLayout-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_margin="10dp"-->
-        <!--android:background="@color/spinner_bg"-->
-        <!--android:layout_gravity="end">-->
-        <!--<Spinner-->
-            <!--android:id="@+id/face_scan_spinner"-->
-            <!--android:layout_width="135dp"-->
-            <!--android:dropDownVerticalOffset="42dp"-->
-            <!--android:dropDownWidth="135dp"-->
-            <!--android:layout_height="42dp"/>-->
-    <!--</FrameLayout>-->
 </FrameLayout>

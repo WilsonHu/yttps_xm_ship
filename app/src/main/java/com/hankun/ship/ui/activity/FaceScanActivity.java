@@ -36,6 +36,7 @@ import com.arcsoft.face.FaceEngine;
 import com.arcsoft.face.FaceInfo;
 import com.arcsoft.face.GenderInfo;
 import com.arcsoft.face.VersionInfo;
+import com.blankj.utilcode.util.DeviceUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.hankun.ship.R;
@@ -426,7 +427,7 @@ public class FaceScanActivity extends AppCompatActivity implements ViewTreeObser
             FaceDetectDTO faceDetectDTO = new FaceDetectDTO();
             faceDetectDTO.setImageBase64(base64Str);
             HashMap<String, String> attributesHashMap = new HashMap<>();
-            attributesHashMap.put("sn", ShipApp.getApp().getIMEI());
+            attributesHashMap.put("sn", DeviceUtils.getMacAddress());
             attributesHashMap.put("cruise_id", mCruiseID);
             attributesHashMap.put("lane", mLane);
             attributesHashMap.put("vessel", mVessel);

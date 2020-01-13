@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.DeviceUtils;
 import com.google.gson.Gson;
 import com.hankun.ship.R;
 import com.hankun.ship.adapter.SearchAdapter;
@@ -133,7 +134,7 @@ public class LoginActivity extends AppCompatActivity {
         LinkedHashMap<String, Object> postValue = new LinkedHashMap<>();
         postValue.put("account", account);
         postValue.put("password", password);
-        postValue.put("sn", ShipApp.getApp().getIMEI());
+        postValue.put("sn", DeviceUtils.getMacAddress());
         mNetwork.postData(URL.USER_LOGIN, new Gson().toJson(postValue), mLoginHandler);
 //        Intent it = new Intent();
 //        it.putExtra("lane", account);
