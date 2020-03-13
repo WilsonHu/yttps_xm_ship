@@ -6,8 +6,8 @@ android {
         applicationId "com.hankun.ship"
         minSdkVersion 26
         targetSdkVersion 28
-        versionCode 2
-        versionName "1.2"
+        versionCode 9
+        versionName "1.9"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

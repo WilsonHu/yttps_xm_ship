@@ -28,7 +28,7 @@ import okhttp3.Response;
 
 
 /**
- * @author nan
+ * @author Hu Tong
  */
 public class Network {
     private static String TAG = "nlgNetwork";

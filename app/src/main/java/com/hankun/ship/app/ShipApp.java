@@ -98,7 +98,10 @@ public class ShipApp extends Application {
         //获取字体
         mTypeface = getResources().getFont(R.font.comic);
 
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS);
         builder.sslSocketFactory(HTTPSTrustManager.allowAllSSL());
         builder.hostnameVerifier(new TrustAllHostnameVerifier());
         mOKHttpClient = builder.build();

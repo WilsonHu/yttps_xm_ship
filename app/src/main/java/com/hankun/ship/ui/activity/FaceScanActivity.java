@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
-import android.graphics.Typeface;
 import android.hardware.Camera;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -25,7 +24,6 @@ import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,15 +38,13 @@ import com.blankj.utilcode.util.DeviceUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.hankun.ship.R;
-import com.hankun.ship.adapter.SearchAdapter;
 import com.hankun.ship.app.ShipApp;
 import com.hankun.ship.app.URL;
 import com.hankun.ship.bean.DrawInfo;
 import com.hankun.ship.bean.FaceDetectDTO;
-import com.hankun.ship.bean.ModeType;
 import com.hankun.ship.bean.response.ResponseData;
 import com.hankun.ship.net.Network;
-import com.hankun.ship.service.MyMqttService;
+//import com.hankun.ship.service.MyMqttService;
 import com.hankun.ship.util.BaseUtil;
 import com.hankun.ship.util.ConfigUtil;
 import com.hankun.ship.util.DrawHelper;
@@ -60,7 +56,6 @@ import com.hankun.ship.widget.FaceRectView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -132,6 +127,11 @@ public class FaceScanActivity extends AppCompatActivity implements ViewTreeObser
     private LogoutHandler mLogoutHandler;
 
     /**
+     * 需要连续点击两次回退按钮才可以退出识别activity
+     */
+    private long mBeforeClickTime = 0L;
+
+    /**
      * 所需的所有权限信息
      */
     private static final String[] NEEDED_PERMISSIONS = new String[]{
@@ -160,7 +160,7 @@ public class FaceScanActivity extends AppCompatActivity implements ViewTreeObser
         mNoticeMessage = findViewById(R.id.notice_message);
         //在布局结束后才做初始化操作
         previewView.getViewTreeObserver().addOnGlobalLayoutListener(this);
-
+        PROCESSING = true;
         if (mRecoThread == null) {
             mRecoThread = new Thread(new Runnable() {
                 @Override
@@ -170,13 +170,12 @@ public class FaceScanActivity extends AppCompatActivity implements ViewTreeObser
             });
             mRecoThread.start();
         }
-        PROCESSING = true;
 
         initDialog();
         initMediaPlayer();
-        //启动MQTT服务
-        mqttIntent = new Intent(this, MyMqttService.class);
-        startForegroundService(mqttIntent);
+//        //启动MQTT服务
+//        mqttIntent = new Intent(this, MyMqttService.class);
+//        startService(mqttIntent);
 
         mLogoutHandler = new LogoutHandler();
         mNetwork = Network.Instance(ShipApp.getApp());
@@ -210,6 +209,7 @@ public class FaceScanActivity extends AppCompatActivity implements ViewTreeObser
         super.onStart();
         if (cameraHelper != null && cameraHelper.isStopped()) {
             cameraHelper.start();
+            Log.i(TAG, "OnStart to start camera.");
         }
     }
 
@@ -217,11 +217,16 @@ public class FaceScanActivity extends AppCompatActivity implements ViewTreeObser
     protected void onStop() {
         super.onStop();
         //PROCESSING = false;
-        cameraHelper.stop();
+        if (cameraHelper != null && !cameraHelper.isStopped()) {
+            cameraHelper.stop();
+            Log.i(TAG, "OnStop to stop camera.");
+        }
     }
 
-    @Override
-    protected void onDestroy() {
+    /**
+     * 释放camera、stop service、停止detect人脸
+     */
+    private void releaseResource() {
         if (cameraHelper != null) {
             cameraHelper.release();
             cameraHelper = null;
@@ -243,8 +248,13 @@ public class FaceScanActivity extends AppCompatActivity implements ViewTreeObser
             mNotifyRecordMediaPlayer.stop();
             mNotifyRecordMediaPlayer = null;
         }
-        stopService(mqttIntent);
+        //stopService(mqttIntent);
         PROCESSING = false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        releaseResource();
         super.onDestroy();
     }
 
@@ -309,8 +319,15 @@ public class FaceScanActivity extends AppCompatActivity implements ViewTreeObser
                             @Override
                             public void run() {
                                 mNoticeMessage.setText(result);
+                                Log.w(TAG, result);
                             }
                         });
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                ShowMessage.showToast(FaceScanActivity.this, result, ShowMessage.MessageDuring.SHORT);
+//                            }
+//                        });
                         CURRENT_DETECTING_FACE_ID = -1;
                     } else {
                         runOnUiThread(new Runnable() {
@@ -376,9 +393,10 @@ public class FaceScanActivity extends AppCompatActivity implements ViewTreeObser
             result = "Please face the camera in front.";
         }
 
-        if (faceInfo.getRect().left <= 10 || faceInfo.getRect().right > previewSize.width ||
-                faceInfo.getRect().top <= 10 || faceInfo.getRect().bottom > previewSize.height) {
-            result = "Please keep your face in camera.";
+        if (faceInfo.getRect().left <= (-0.1) * previewSize.width || faceInfo.getRect().right > previewSize.width * 1.1 ||
+                faceInfo.getRect().top <= (-0.1) * previewSize.height || faceInfo.getRect().bottom > previewSize.height * 1.1) {
+            result = "Please keep your face in camera. " + "Preview width: " + previewSize.width + " Preview height: " + previewSize.height + "; left:" + faceInfo.getRect().left + ",right: "
+                    + faceInfo.getRect().right + ", top: " + faceInfo.getRect().top + ", bottom: " + faceInfo.getRect().bottom;
         }
 
         //判断人脸比例在camera的中比例
@@ -421,7 +439,6 @@ public class FaceScanActivity extends AppCompatActivity implements ViewTreeObser
     void checkByRemote(PreviewData data) {
         Log.w(TAG, "Begin to remote compare");
         String base64Str = BaseUtil.getBase64FromYUV(data.cameraData, previewSize.width, previewSize.height);
-        Log.w(TAG, "Finish picture process.");
         Response response = null;
         try {
             FaceDetectDTO faceDetectDTO = new FaceDetectDTO();
@@ -489,6 +506,12 @@ public class FaceScanActivity extends AppCompatActivity implements ViewTreeObser
             }
             //CURRENT_DETECTING_FACE_ID = -1;
             Log.w(TAG, "Remote compare complete");
+//            runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    ShowMessage.showToast(FaceScanActivity.this, "Remote compare complete", ShowMessage.MessageDuring.SHORT);
+//                }
+//            });
         }
     }
 
@@ -639,6 +662,7 @@ public class FaceScanActivity extends AppCompatActivity implements ViewTreeObser
         if (item.getTitle().equals("Logout")) {
             mNetwork.getData(URL.LOGOUT + mLane, mLogoutHandler);
         } else if (item.getTitle().equals("Setting")) {
+            //releaseResource();
             Intent it = new Intent();
             it.setClass(FaceScanActivity.this, SetupActivity.class);
             startActivity(it);
@@ -654,6 +678,7 @@ public class FaceScanActivity extends AppCompatActivity implements ViewTreeObser
             if (msg.what == Network.OK) {
                 ShipApp.getApp().setLogOut();
                 ShipApp.getApp().setLane("");
+                //releaseResource();
                 Intent it = new Intent();
                 it.setClass(FaceScanActivity.this, LoginActivity.class);
                 startActivity(it);
@@ -668,5 +693,19 @@ public class FaceScanActivity extends AppCompatActivity implements ViewTreeObser
                 });
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        long currentTime = System.currentTimeMillis();
+        if(mBeforeClickTime == 0L) {
+            mBeforeClickTime = currentTime;
+        } else {
+            if(currentTime - mBeforeClickTime < 1500L) {
+                finish();
+            }
+        }
+        mBeforeClickTime = currentTime;
     }
 }

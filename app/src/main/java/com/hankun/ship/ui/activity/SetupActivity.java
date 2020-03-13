@@ -96,8 +96,8 @@ public class SetupActivity extends AppCompatActivity implements View.OnClickList
         mCruiseValueSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (mCruiseIDList.get(position).length() >= 3) {
-                    mVesselValueTv.setText(mCruiseIDList.get(position).substring(0, 3));
+                if (mCruiseIDList.get(position).length() >= 2) {
+                    mVesselValueTv.setText(mCruiseIDList.get(position).substring(0, 2) + "R");
                     mCruiseID = mCruiseIDList.get(position);
                     setModeBtnStatus(true);
                 } else {
