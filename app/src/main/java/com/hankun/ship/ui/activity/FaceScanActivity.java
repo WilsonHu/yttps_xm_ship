@@ -466,7 +466,7 @@ public class FaceScanActivity extends AppCompatActivity implements ViewTreeObser
                 final ResponseData responseData = gson.fromJson(response.body().string(), new TypeToken<ResponseData>() {
                 }.getType());
                 if (responseData != null) {
-                    if (responseData.getCode() == 200 || responseData.getCode() == 400) {
+                    if (responseData.getCode() == 200) {
                         String okStr = responseData.getData().toString();
                         List<String> results = Arrays.asList(okStr.split("\\n"));
                         if (results != null && results.size() == 4) {
@@ -475,15 +475,30 @@ public class FaceScanActivity extends AppCompatActivity implements ViewTreeObser
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ShowMessage.showToast(FaceScanActivity.this, "Result format error!", ShowMessage.MessageDuring.SHORT);
+                                    ShowMessage.showToast(FaceScanActivity.this, "Result parse error!", ShowMessage.MessageDuring.SHORT);
                                 }
                             });
                         }
-                        if (responseData.getCode() == 400) {
+                    } else if(responseData.getCode() == 400) {
+                        String errorStr = responseData.getMessage();
+                        List<String> results = Arrays.asList(errorStr.split("\\n"));
+                        if (results != null && results.size() == 4) {
                             showVerifyResultDialog(false, results);
                         } else {
-                            showVerifyResultDialog(true, results);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ShowMessage.showToast(FaceScanActivity.this, "Result parse error!", ShowMessage.MessageDuring.SHORT);
+                                }
+                            });
                         }
+                    } else {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ShowMessage.showToast(FaceScanActivity.this, "Response code error!", ShowMessage.MessageDuring.SHORT);
+                            }
+                        });
                     }
                 } else {
                     showVerifyResultDialog(false, null);
@@ -569,7 +584,7 @@ public class FaceScanActivity extends AppCompatActivity implements ViewTreeObser
                         verifyEng.setText("Please seek for staff assistance");
                         verifyTc.setText("請尋求員工協助");
                         verifySc.setText("请寻求员工协助");
-                        verifyJa.setText("スタッフの支援を求めてください");
+                        verifyJa.setText("スタッフへお声掛けください");
                     }
                 }
             }
